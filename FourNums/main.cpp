@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <set>
@@ -15,7 +16,7 @@ void printGroup(vector<int>& ar, vector<bool>& inc)
 }
 
 
-bool findGroups(vector<int>& ar, vector<bool>& inc, int k, int count, int pos)
+bool findGroupsOfFour(vector<int>& ar, vector<bool>& inc, int k, int count, int pos)
 {
     if (count < 0)
         return false;
@@ -23,67 +24,82 @@ bool findGroups(vector<int>& ar, vector<bool>& inc, int k, int count, int pos)
     // value over
     if (k < 0)
         return false;
-    else if (k > 0)
+    
+    
+    if (k > 0)
     {
         if (count == 0)
-            return true; // we can continue
+            return false; // we can continue
         else
         {
             for (int i=pos; i<ar.size(); i++)
             {
                 inc[i] = true;
-                bool test = findGroups(ar, inc, k-ar[i], count-1, i+1);
+                if (k-ar[i] < 0)
+                    break;
+                else
+                {
+                    if (findGroupsOfFour(ar, inc, k-ar[i], count-1, i+1))
+                    {
+                        inc[i]  = false;
+                        return true;
+                    }
+                }
                 inc[i] = false;
-                if (!test) return false;
             }
         }
     }
     else if (count == 0)
     {
         printGroup(ar, inc);
-        return false;
+        return true;
     }
     return false;
 }
 
+bool findGroupsOfFour(vector<int>& array, int k)
+{
+    bool found = false;
+    vector<bool> include(array.size(), false);
+    for (int i=0; i<array.size(); i++)
+    {
+        include[i] = true;
+        if (findGroupsOfFour(array, include, k-array[i], 3, i+1))
+            found = true;
+        include[i] = false;
+    }
+    return found;
+}
 int main() {
     
     int T=0;
     cin >> T;
+    vector<vector<int>> arrays;
+    vector<int> ks(T);
     for (int i=0; i<T; i++)
     {
         int n = 0;
         int k = 0;
         cin >> n >> k;
         
-        vector<int> array(n);
-        vector<bool> include(n, false);
+        vector<int> array(n); // let's just not use pointers
+        ks[i] = k;
         for (int j=0; j<n; j++)
         {
             cin >> array[j];
         }
         
         sort(array.begin(), array.end());
-        
-        for (int j=0; j<n; j++)
-        {
-            include[j] = true;
-            findGroups(array, include, k-array[j], 3, j+1);
-            include[j] = false;
-        }
-        
-        
+        arrays.push_back(array);
     }
     
-    // 1 3 4 9
-    //10
-    // 9, 3, 1
-    // 7, 2, 2,
-    // 4, 1, 3,
-    // 0, 0, 4,
+    for (int i=0; i<T; i++)
+    {
+        if (!findGroupsOfFour(arrays[i], ks[i]))
+            cout << "-1";
     
-    
-    // 1 4 8 17
+        cout << endl;
+    }
     
     return 0;
 }
