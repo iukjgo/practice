@@ -7,42 +7,50 @@ using namespace std;
 
 void printGroup(vector<int>& ar, vector<bool>& inc)
 {
+    string group;
     for (int i=0; i<ar.size(); i++)
     {
         if (inc[i])
-            cout << ar[i] << " ";
+        {
+            group += to_string(ar[i]) + " ";
+        }
     }
-    cout << "$";
+    
+    group += "$";
+    cout << group;
 }
 
 
 bool findGroupsOfFour(vector<int>& ar, vector<bool>& inc, int k, int count, int pos)
 {
-    if (count < 0)
-        return false;
-
+    bool found = false;
     // value over
     if (k < 0)
         return false;
-    
-    
-    if (k > 0)
+    else if (k > 0)
     {
         if (count == 0)
             return false; // we can continue
         else
         {
+            int prev = 100000;
             for (int i=pos; i<ar.size(); i++)
             {
+                if (prev==ar[i])
+                    continue;
+                prev = ar[i];
+                
                 inc[i] = true;
                 if (k-ar[i] < 0)
+                {
+                    inc[i]  = false;
                     break;
+                }
                 else
                 {
                     if (findGroupsOfFour(ar, inc, k-ar[i], count-1, i+1))
                     {
-                        inc[i]  = false;
-                        return true;
+                        found = true;
                     }
                 }
                 inc[i] = false;
@@ -52,26 +60,33 @@ bool findGroupsOfFour(vector<int>& ar, vector<bool>& inc, int k, int count, int 
     else if (count == 0)
     {
         printGroup(ar, inc);
-        return true;
-    }
-    return false;
-}
-
-bool findGroupsOfFour(vector<int>& array, int k)
-{
-    bool found = false;
-    vector<bool> include(array.size(), false);
-    for (int i=0; i<array.size(); i++)
-    {
-        include[i] = true;
-        if (findGroupsOfFour(array, include, k-array[i], 3, i+1))
-            found = true;
-        include[i] = false;
+        found = true;
     }
     return found;
 }
+
+void findGroupsOfFour(vector<int>& array, int k)
+{
+    vector<bool> include(array.size(), false);
+    set<string> groups;
+    bool found = false;
+    int prev=100000;
+    for (int i=0; i<array.size(); i++)
+    {
+        if (prev==array[i])
+            continue;
+        prev = array[i];
+        include[i] = true;
+        if (findGroupsOfFour(array, include, k-array[i], 3, i+1))
+        {
+            found = true;
+        }
+        include[i] = false;
+    }
+    if (!found)
+        cout << "-1";
+}
 int main() {
-    
     int T=0;
     cin >> T;
     vector<vector<int>> arrays;
@@ -82,7 +97,7 @@ int main() {
         int k = 0;
         cin >> n >> k;
         
-        vector<int> array(n); // let's just not use pointers
+        vector<int> array(n);
         ks[i] = k;
         for (int j=0; j<n; j++)
         {
@@ -90,16 +105,17 @@ int main() {
         }
         
         sort(array.begin(), array.end());
+
         arrays.push_back(array);
     }
     
     for (int i=0; i<T; i++)
     {
-        if (!findGroupsOfFour(arrays[i], ks[i]))
-            cout << "-1";
-    
+        findGroupsOfFour(arrays[i], ks[i]);
         cout << endl;
     }
+    
+
     
     return 0;
 }
