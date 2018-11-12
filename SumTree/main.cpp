@@ -132,22 +132,10 @@ Node* left, * right;
 }; */
 // Should return true if tree is Sum Tree, else false
 //Abraham's code below
-int isSumTreeHelper(Node* root);
+
 bool isSumTree(Node* root)
 {
-   if (!root) return true;
-   int left = 0;
-   int right = 0;
-
-   if (root->left)
-      left = isSumTreeHelper(root->left);
-   if (root->right)
-      right = isSumTreeHelper(root->right);
-
-   if (left >= 0 && right >= 0)
-      return root->data == left + right;
-
-   return false;
+   return isSumTreeOld(root);
 }
 
 int isSumTreeHelper(Node* root)
@@ -165,4 +153,20 @@ int isSumTreeHelper(Node* root)
    }
 
    return -1;
+}
+bool isSumTreeOld(Node* root)
+{
+   if (!root) return true;
+   int left = 0;
+   int right = 0;
+
+   if (root->left)
+      left = isSumTreeHelper(root->left);
+   if (root->right)
+      right = isSumTreeHelper(root->right);
+
+   if (left >= 0 && right >= 0)
+      return root->data == left + right;
+
+   return false;
 }
