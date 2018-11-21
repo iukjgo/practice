@@ -7,39 +7,31 @@
 using namespace std;
 
 int main() {
-   int T=0;
-   cin >> T;
-   vector<vector<int>> arrays;
-   vector<int> ks(T);
+    int T=0;
+    cin >> T;
 
-   for (int i=0; i<T; i++) {
-      int n = 0;
-      int k = 0;
-      cin >> n >> k;
+    while (T--) {
+        int vertices = 0;
+        cin >> vertices;
+
+        Graph test(vertices);
         
-      vector<int> array(n);
-      ks[i] = k;
-      for (int j=0; j<n; j++) {
-         cin >> array[j];
-      }
+        for (int u=0; u<vertices; u++) {
+            for (int v=0; v<vertices; v++) {
+                int edge;
+                cin >> edge;
+                
+                if (edge == 1)
+                    test.addEdge(u, v);
+            }
+        }
+        if (CastleRun::solve(test))
+            cout << "True" << endl;
+        else
+            cout << "False" << endl;
 
-      arrays.push_back(array);
-   }
-    
-   for (int i=0; i<T; i++) {
-      FourNums solver;
-      solver.setArrayToSolve(arrays[i]);
-      vector<string> results = solver.solveGeneric(ks[i]);
+    }
 
-      for (int j=0; j<results.size(); j++)
-         cout << results[i] << "$";
-      if (results.size() == 0)
-         cout << "-1";
 
-      cout << endl;
-   }
-    
-
-    
     return 0;
 }
