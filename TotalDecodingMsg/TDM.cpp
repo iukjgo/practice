@@ -44,7 +44,7 @@ TDM::solve()
       return 1;
 
 
-   return getDecodePossibilityCount(0);
+   return getDecodePossibilityCountIterative();
 }
 
 int
@@ -53,14 +53,10 @@ TDM::getDecodePossibilityCount(int strtPos)
    if (strtPos >= mStr.length())
       return 1;
 
-   std::unordered_map<int,int>::iterator itr = mCountCache.find(strtPos);
-   if (itr != mCountCache.end())
-      return itr->second;
-
    int count = 0;
-   // one char 
-   // count++;
+
    if (mStr[strtPos] != '0') {
+      // one char
       count += getDecodePossibilityCount(strtPos + 1);
 
       // try two chars
@@ -72,7 +68,36 @@ TDM::getDecodePossibilityCount(int strtPos)
          }
       }
    }
-   mCountCache[strtPos] = count;
+   return count;
+}
+
+
+int
+TDM::getDecodePossibilityCountIterative()
+{
+   for (int i = mStr.length()-1; i >= 0; i--) {
+      if (mStr[i] > '0') {
+      }
+   }
+
+   if (strtPos >= mStr.length())
+      return 1;
+
+   int count = 0;
+
+   if (mStr[strtPos] != '0') {
+      // one char
+      count += getDecodePossibilityCount(strtPos + 1);
+
+      // try two chars
+      if (strtPos + 1 < mStr.length()) {
+         if (mStr[strtPos] == '1' ||
+            (mStr[strtPos] == '2' && mStr[strtPos + 1] >= '0' && mStr[strtPos + 1] <= '6')) {
+            // between [10~26]
+            count += getDecodePossibilityCount(strtPos + 2);
+         }
+      }
+   }
    return count;
 }
 /*

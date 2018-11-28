@@ -56,6 +56,7 @@ public:
 
 private:
    int getDecodePossibilityCount(int strtPos);
+   int getDecodePossibilityCountIterative();
 
 private:
     bool mValid;
