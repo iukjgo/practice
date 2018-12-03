@@ -37,4 +37,6 @@ True
 
 Explanation:
 There can be a path from r1->r3->r4->r5->r1->r4->r2->r1 where r1,r2,r3,r4,r5 are rooms. Here all paths are covered and r1 is reached again.
+
+This is an undirected graph - solution is to determine whether each vertex has an even degree.  If so, the output is true. Otherwise, false.
  
