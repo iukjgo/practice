@@ -26,8 +26,8 @@ int main() {
         for (int i=0; i<N; i++) {
             cin >> B[i];
         }
-        
-        Max†ipCalc::solve(X, Y, A, B);
+        MaxTipCalc test(A, B, X, Y);
+        cout << test.solve() << endl;
 
     }
 
