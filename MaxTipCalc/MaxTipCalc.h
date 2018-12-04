@@ -6,6 +6,25 @@
 #include <unordered_map>
 using namespace std;
 
+class Tips {
+public:
+    Tips(int a, int b) : mA(a), mB(b), mDiff(abs(a-b)) {};
+
+    bool operator < (const Tips& right) const {
+        return this->diff() < right.diff();
+    }
+
+    const int a() const { return mA; }
+    const int b() const { return mB; }
+    const int diff() const { return mDiff; }
+
+private:
+    int mA;
+    int mB;
+    int mDiff;
+};
+
+
 
 class MaxTipCalc
 {
@@ -15,7 +34,8 @@ public:
 
 private:
 
-    int solveHelper(int pos, int x, int y);
+    int solveDP(int pos, int x, int y);
+    int solveGreedy();
 
     vector<int> mA;
     vector<int> mB;
