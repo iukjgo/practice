@@ -44,3 +44,15 @@ Output:
 
 21
 43
+
+
+---------------------------------
+
+EDITORIAL
+In the above problem we will use greedy approach to get the maximum tip earned by the two waiters. Following steps will help in solving this problem:
+1.    Sort the absolute difference of the value of Ai and Bi( |Ai-Bi|) in decreasing order.
+2.    Compare Ai and Bi value which one will be greater add that value to the sum.
+3.    Decrement from the total order taken by Rahul or Ankit in case of order taken from A or B row by the comparison made.
+4.    If i equals to n goto step 5 else goto step 2.
+5.    Return sum.
+ 
